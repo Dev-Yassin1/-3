@@ -112,16 +112,28 @@ function initMobileMenu() {
   });
 }
 
-// ── Load menu from API ──
+// ── Load menu from API (FIREBASE) ──
 async function loadMenu() {
   const container = document.getElementById('menuContent');
   if (!container) return;
 
-  try {
-    const res  = await fetch('/api/menu');
-    const data = await res.json();
+  // Initialize Firebase inside the app
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWvBLWd9AL6ejrMImcALvQSK6N93E7b-E",
+    authDomain: "gampre-admin.firebaseapp.com",
+    projectId: "gampre-admin"
+  };
+  
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const db = firebase.firestore();
 
-    if (!data.menuItems || data.menuItems.length === 0) {
+  try {
+    const snap = await db.collection('menuItems').orderBy('createdAt', 'desc').get();
+    const items = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    if (items.length === 0) {
       container.innerHTML = `
         <div class="menu-empty">
           <span class="menu-empty-icon">📋</span>
@@ -131,17 +143,19 @@ async function loadMenu() {
       return;
     }
 
-    const cards = data.menuItems.map(item => {
-      const date = new Date(item.createdAt).toLocaleDateString('ar-EG', {
-        year: 'numeric', month: 'long', day: 'numeric'
-      });
+    const cards = items.map(item => {
+      // Handle Firebase Timestamp
+      const dateStr = item.createdAt && item.createdAt.toDate 
+        ? item.createdAt.toDate().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })
+        : 'حديثاً';
+        
       if (item.type === 'image') {
         return `
           <div class="menu-card">
             <img src="${esc(item.link)}" alt="${esc(item.title)}" class="menu-card-image" loading="lazy">
             <div class="menu-card-body">
               <h3 class="menu-card-title">${esc(item.title)}</h3>
-              <p class="menu-card-date">📅 ${date}</p>
+              <p class="menu-card-date">📅 ${dateStr}</p>
               <a href="${esc(item.link)}" target="_blank" class="menu-card-link">🔗 افتح الصورة</a>
             </div>
           </div>`;
@@ -150,14 +164,15 @@ async function loadMenu() {
         <div class="menu-card">
           <div class="menu-card-body" style="padding:32px;">
             <h3 class="menu-card-title" style="font-size:1.3rem;">${esc(item.title)}</h3>
-            <p class="menu-card-date">📅 ${date}</p>
+            <p class="menu-card-date">📅 ${dateStr}</p>
             <a href="${esc(item.link)}" target="_blank" class="menu-card-link" style="margin-top:18px;">🔗 افتح المنيو</a>
           </div>
         </div>`;
     }).join('');
 
     container.innerHTML = `<div class="menu-grid">${cards}</div>`;
-  } catch {
+  } catch (err) {
+    console.error("Firebase Error:", err);
     container.innerHTML = `
       <div class="menu-empty">
         <span class="menu-empty-icon">😕</span>
