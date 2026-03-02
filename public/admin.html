@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>لوحة التحكم | إدارة منيو جمبري .com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ── LOGIN ── -->
+  <div id="loginSection">
+    <div class="admin-topbar">
+      <div class="admin-topbar-brand">
+        <span class="logo-icon">🦐</span>
+        <span class="logo-text">جمبري .com</span>
+      </div>
+      <a href="/" style="font-size:0.85rem;color:var(--text-muted);font-weight:600;">🌐 الموقع الرئيسي</a>
+    </div>
+
+    <div class="admin-page">
+      <div class="admin-hero">
+        <h1>🔐 لوحة التحكم</h1>
+        <p>أدخل كلمة السر للوصول لإدارة المنيو</p>
+      </div>
+
+      <div class="login-card">
+        <span class="login-icon">🦐</span>
+        <h2>تسجيل الدخول</h2>
+        <p>ادخل كلمة السر عشان تقدر تعدل المنيو</p>
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="passwordInput">كلمة السر</label>
+            <input
+              type="password"
+              class="form-input"
+              id="passwordInput"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+            >
+          </div>
+          <button type="submit" class="btn-admin" id="loginBtn">
+            دخول 🚀
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ADMIN PANEL ── -->
+  <div id="adminPanel" class="admin-panel">
+    <div class="admin-topbar">
+      <div class="admin-topbar-brand">
+        <span class="logo-icon">🦐</span>
+        <span class="logo-text">جمبري .com — لوحة التحكم</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <a href="/" style="font-size:0.85rem;color:var(--text-muted);font-weight:600;">🌐 الموقع</a>
+        <button class="btn-logout" id="logoutBtn">🚪 خروج</button>
+      </div>
+    </div>
+
+    <div class="admin-page">
+      <div class="admin-hero">
+        <h1>👋 أهلاً بيك!</h1>
+        <p>من هنا تقدر تضيف وتحذف المنيو بتاع المطعم</p>
+      </div>
+
+      <!-- Add New -->
+      <div class="admin-card">
+        <div class="admin-card-title">
+          <div class="admin-card-title-icon">➕</div>
+          إضافة منيو جديد
+        </div>
+        <form id="addMenuForm">
+          <div class="form-group">
+            <label class="form-label">اسم المنيو</label>
+            <input type="text" class="form-input" id="menuTitle" placeholder="مثلاً: منيو مارس 2026" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">لينك المنيو</label>
+            <input type="url" class="form-input" id="menuLink" placeholder="https://..." required dir="ltr">
+          </div>
+          <div class="form-group">
+            <label class="form-label">نوع اللينك</label>
+            <select class="form-select" id="menuType">
+              <option value="link">🔗 لينك عادي (PDF, Google Drive, إلخ)</option>
+              <option value="image">🖼️ صورة (رابط صورة مباشر)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-admin" id="addMenuBtn">
+            ✅ إضافة المنيو
+          </button>
+        </form>
+      </div>
+
+      <!-- Current Menu -->
+      <div class="admin-card">
+        <div class="admin-card-title">
+          <div class="admin-card-title-icon">📋</div>
+          المنيو الحالي
+        </div>
+        <div id="menuList">
+          <div class="menu-loading">
+            <div class="spinner"></div>
+            <p>جاري التحميل...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="admin-card danger-card">
+        <div class="admin-card-title" style="color:#c53030;">
+          <div class="admin-card-title-icon">⚠️</div>
+          منطقة الخطر
+        </div>
+        <p class="danger-note">حذف كل المنيو مرة واحدة — الإجراء ده مش بيترجع!</p>
+        <button class="btn-admin danger" id="deleteAllBtn">
+          🗑️ حذف كل المنيو
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
