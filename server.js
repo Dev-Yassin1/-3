@@ -5,8 +5,8 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Admin password - change this!
-const ADMIN_PASSWORD = "admin123";
+// Admin password — set ADMIN_PASSWORD env var on your hosting platform!
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "gampre@2026";
 
 // Middleware
 app.use(express.json());
